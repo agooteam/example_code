@@ -1,4 +1,4 @@
-<?php namespace TrendLive\Http\Controllers;
+﻿<?php namespace TrendLive\Http\Controllers;
 use Illuminate\Support\Facades\View;
 use TrendLive\Http\Requests;
 use TrendLive\Http\Controllers\Controller;

@@ -1,4 +1,4 @@
-<?php namespace TrendLive\Http\Controllers;
+п»ї<?php namespace TrendLive\Http\Controllers;
 use Illuminate\Support\Facades\URL;
 use TrendLive\Collection;
 use TrendLive\Http\Requests;
@@ -18,7 +18,7 @@ class ProfileController extends Controller {
         if(Auth::check()) return redirect('/profile/my_collection');
         else return redirect('/login');
     }
-    public function index(){//Стартовая страница профиля
+    public function index(){//РЎС‚Р°СЂС‚РѕРІР°СЏ СЃС‚СЂР°РЅРёС†Р° РїСЂРѕС„РёР»СЏ
         $pagination = 6;
         $page = 1;
         $url =  URL::full();
@@ -38,53 +38,53 @@ class ProfileController extends Controller {
         reset($collections);
         return view('Profile',compact('collections'));
     }
-    public function get_login(){//страница авторизации
+    public function get_login(){//СЃС‚СЂР°РЅРёС†Р° Р°РІС‚РѕСЂРёР·Р°С†РёРё
         if(Auth::check())
             return redirect('/profile/my_collection');
         return view('Login');
     }
-    public function get_recovery_password(){//страница восстановления пароля
+    public function get_recovery_password(){//СЃС‚СЂР°РЅРёС†Р° РІРѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ РїР°СЂРѕР»СЏ
         if(Auth::check())
             return redirect('/profile/my_collection');
         return view('Recovery_password');
     }
-    public  function post_recovery_password(RecoveryPasswordFormRequest $request){//на вход подается чистый запрос
-        $data = $request->all();//получаем все данные
-        $email = $data['email'];//вытаскиваем email
-        $new_password = Str::random(6);//генерация строки из 6 символов
-        $result = User::set_new_password($email,$new_password);//установка нового пароля
-        if($result){//если пользователь существует и пароль сменен
-            $user = User::get_user_for_email($email);//получаем модель пользователя
-            $to_mail = [//формируем массив данных
+    public  function post_recovery_password(RecoveryPasswordFormRequest $request){//РЅР° РІС…РѕРґ РїРѕРґР°РµС‚СЃСЏ С‡РёСЃС‚С‹Р№ Р·Р°РїСЂРѕСЃ
+        $data = $request->all();//РїРѕР»СѓС‡Р°РµРј РІСЃРµ РґР°РЅРЅС‹Рµ
+        $email = $data['email'];//РІС‹С‚Р°СЃРєРёРІР°РµРј email
+        $new_password = Str::random(6);//РіРµРЅРµСЂР°С†РёСЏ СЃС‚СЂРѕРєРё РёР· 6 СЃРёРјРІРѕР»РѕРІ
+        $result = User::set_new_password($email,$new_password);//СѓСЃС‚Р°РЅРѕРІРєР° РЅРѕРІРѕРіРѕ РїР°СЂРѕР»СЏ
+        if($result){//РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃСѓС‰РµСЃС‚РІСѓРµС‚ Рё РїР°СЂРѕР»СЊ СЃРјРµРЅРµРЅ
+            $user = User::get_user_for_email($email);//РїРѕР»СѓС‡Р°РµРј РјРѕРґРµР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+            $to_mail = [//С„РѕСЂРјРёСЂСѓРµРј РјР°СЃСЃРёРІ РґР°РЅРЅС‹С…
                 'password' => $new_password
             ];
-            Mail::send('emails.recovery_password', $to_mail, function($message) use ($user){//отправляем письмо
-                $message->to($user->email, 'Пользователь')->subject('Восстановление пароля');//указываем адресата и тему письма
+            Mail::send('emails.recovery_password', $to_mail, function($message) use ($user){//РѕС‚РїСЂР°РІР»СЏРµРј РїРёСЃСЊРјРѕ
+                $message->to($user->email, 'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ')->subject('Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РїР°СЂРѕР»СЏ');//СѓРєР°Р·С‹РІР°РµРј Р°РґСЂРµСЃР°С‚Р° Рё С‚РµРјСѓ РїРёСЃСЊРјР°
             });
-            return redirect('/recovery_password')->with('success','Вы успешно восстановили пароль. Новый пароль выслан на ваш E-mail.');//сообщение об успехе
+            return redirect('/recovery_password')->with('success','Р’С‹ СѓСЃРїРµС€РЅРѕ РІРѕСЃСЃС‚Р°РЅРѕРІРёР»Рё РїР°СЂРѕР»СЊ. РќРѕРІС‹Р№ РїР°СЂРѕР»СЊ РІС‹СЃР»Р°РЅ РЅР° РІР°С€ E-mail.');//СЃРѕРѕР±С‰РµРЅРёРµ РѕР± СѓСЃРїРµС…Рµ
         }
-        else //если пользователя не существует
-            return redirect('/recovery_password')->withErrors('Пользователя с таким E-mail не существует.');//сообщение об ошибке
+        else //РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚
+            return redirect('/recovery_password')->withErrors('РџРѕР»СЊР·РѕРІР°С‚РµР»СЏ СЃ С‚Р°РєРёРј E-mail РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.');//СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ
 
     }
-    public  function post_login(LoginFormRequest $request){//Авторизация метод post
+    public  function post_login(LoginFormRequest $request){//РђРІС‚РѕСЂРёР·Р°С†РёСЏ РјРµС‚РѕРґ post
         $data = $request->all();
-        $email = $data['email'];//получаем email
-        $active = User::check_active($email);//проверяем статус активации
+        $email = $data['email'];//РїРѕР»СѓС‡Р°РµРј email
+        $active = User::check_active($email);//РїСЂРѕРІРµСЂСЏРµРј СЃС‚Р°С‚СѓСЃ Р°РєС‚РёРІР°С†РёРё
         if($active){
-            $remember = false; // не запоминать пользователя
+            $remember = false; // РЅРµ Р·Р°РїРѕРјРёРЅР°С‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
             if(isset($data['remember']))
-                $remember = true; // запоминать пользователя
-            $user = User::login($data,$remember);//авторизируемся
-            if($user instanceof Model)//пользователь авторизировался
+                $remember = true; // Р·Р°РїРѕРјРёРЅР°С‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+            $user = User::login($data,$remember);//Р°РІС‚РѕСЂРёР·РёСЂСѓРµРјСЃСЏ
+            if($user instanceof Model)//РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ Р°РІС‚РѕСЂРёР·РёСЂРѕРІР°Р»СЃСЏ
                 return redirect('/profile/my_collection');
-            else//авторизация не удалась
-                return view('Login')->withErrors('Введенные данные не верны, попробуйте заново.');
+            else//Р°РІС‚РѕСЂРёР·Р°С†РёСЏ РЅРµ СѓРґР°Р»Р°СЃСЊ
+                return view('Login')->withErrors('Р’РІРµРґРµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РЅРµ РІРµСЂРЅС‹, РїРѕРїСЂРѕР±СѓР№С‚Рµ Р·Р°РЅРѕРІРѕ.');
         }
         else
-            return view('Login')->withErrors('Для входа в личный кабинет необходимо подтвердить адрес электронной почты');
+            return view('Login')->withErrors('Р”Р»СЏ РІС…РѕРґР° РІ Р»РёС‡РЅС‹Р№ РєР°Р±РёРЅРµС‚ РЅРµРѕР±С…РѕРґРёРјРѕ РїРѕРґС‚РІРµСЂРґРёС‚СЊ Р°РґСЂРµСЃ СЌР»РµРєС‚СЂРѕРЅРЅРѕР№ РїРѕС‡С‚С‹');
     }
-    public function logout(){//выход из приложения
+    public function logout(){//РІС‹С…РѕРґ РёР· РїСЂРёР»РѕР¶РµРЅРёСЏ
         if(Auth::check())
             Auth::logout();
         return redirect('/login');
@@ -94,21 +94,21 @@ class ProfileController extends Controller {
             return redirect('/login');
         return view('Change_password');
     }
-    public static function post_change_password(ChangePasswordFormRequest $request){//смена пароля обработка
-        $data = $request->all();//получаем все данные
-        $user = Auth::user();//получение модели авторизованного пользователя
-        $result = User::set_new_password($user->email,$data['password']);//установка нового пароля
-        if($result){//если пароль успешно установлен
-            $to_mail = [//формируем массив данных
+    public static function post_change_password(ChangePasswordFormRequest $request){//СЃРјРµРЅР° РїР°СЂРѕР»СЏ РѕР±СЂР°Р±РѕС‚РєР°
+        $data = $request->all();//РїРѕР»СѓС‡Р°РµРј РІСЃРµ РґР°РЅРЅС‹Рµ
+        $user = Auth::user();//РїРѕР»СѓС‡РµРЅРёРµ РјРѕРґРµР»Рё Р°РІС‚РѕСЂРёР·РѕРІР°РЅРЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+        $result = User::set_new_password($user->email,$data['password']);//СѓСЃС‚Р°РЅРѕРІРєР° РЅРѕРІРѕРіРѕ РїР°СЂРѕР»СЏ
+        if($result){//РµСЃР»Рё РїР°СЂРѕР»СЊ СѓСЃРїРµС€РЅРѕ СѓСЃС‚Р°РЅРѕРІР»РµРЅ
+            $to_mail = [//С„РѕСЂРјРёСЂСѓРµРј РјР°СЃСЃРёРІ РґР°РЅРЅС‹С…
                 'password' => $data['password'],
                 'email' => $user->email
             ];
-            Mail::send('emails.change_password', $to_mail, function($message) use ($user){//отправляем письмо
-                $message->to($user->email, 'Пользователь')->subject('Смена пароля');//указываем адресата и тему письма
+            Mail::send('emails.change_password', $to_mail, function($message) use ($user){//РѕС‚РїСЂР°РІР»СЏРµРј РїРёСЃСЊРјРѕ
+                $message->to($user->email, 'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ')->subject('РЎРјРµРЅР° РїР°СЂРѕР»СЏ');//СѓРєР°Р·С‹РІР°РµРј Р°РґСЂРµСЃР°С‚Р° Рё С‚РµРјСѓ РїРёСЃСЊРјР°
             });
-            return redirect('/profile/change_password')->with('success','Вы успешно сменили пароль. Данные для входа в профиль отправлены на ваш E-mail .');//сообщение об успехе
+            return redirect('/profile/change_password')->with('success','Р’С‹ СѓСЃРїРµС€РЅРѕ СЃРјРµРЅРёР»Рё РїР°СЂРѕР»СЊ. Р”Р°РЅРЅС‹Рµ РґР»СЏ РІС…РѕРґР° РІ РїСЂРѕС„РёР»СЊ РѕС‚РїСЂР°РІР»РµРЅС‹ РЅР° РІР°С€ E-mail .');//СЃРѕРѕР±С‰РµРЅРёРµ РѕР± СѓСЃРїРµС…Рµ
         }
-        else //если пользователя не существует
-            return redirect('/profile/change_password')->withErrors('В данный момент невозможно сменить пароль. Попробуйте позже.');//сообщение об успехе
+        else //РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚
+            return redirect('/profile/change_password')->withErrors('Р’ РґР°РЅРЅС‹Р№ РјРѕРјРµРЅС‚ РЅРµРІРѕР·РјРѕР¶РЅРѕ СЃРјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ. РџРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕР·Р¶Рµ.');//СЃРѕРѕР±С‰РµРЅРёРµ РѕР± СѓСЃРїРµС…Рµ
     }
 }

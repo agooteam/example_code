@@ -1,4 +1,4 @@
-<?php namespace TrendLive\Http\Controllers;
+п»ї<?php namespace TrendLive\Http\Controllers;
 use TrendLive\Http\Requests;
 use TrendLive\Http\Controllers\Controller;
 use Auth;
@@ -20,18 +20,18 @@ class CollectionsController extends Controller {
         $categories = Category::all();
         return view('New_collection',compact('categories'));
     }
-    public function post_new_collection(SaveCollectionFormRequest $request ){//сохранение нового курса
+    public function post_new_collection(SaveCollectionFormRequest $request ){//СЃРѕС…СЂР°РЅРµРЅРёРµ РЅРѕРІРѕРіРѕ РєСѓСЂСЃР°
         if(!Auth::check())
             return redirect('/login');
         $data = $request->all();
-        $collection_name = $data['collection_name'];//получаем название курса
-        $description = $data['description'];//получаем описание курса
-        $category_id = $data['category'];//получаем категорию курса
-        $url = $request->url();//получаем путь
-        $pos = strrpos($url, 'profile');//обрезаем
-        $url = substr($url,0,$pos);//получаем домен + протокол
-        $UploadPathImage = public_path().'/assets/temp/';//временный
-        $image_url  = null;//может быть и не будет загружно фотографии
+        $collection_name = $data['collection_name'];//РїРѕР»СѓС‡Р°РµРј РЅР°Р·РІР°РЅРёРµ РєСѓСЂСЃР°
+        $description = $data['description'];//РїРѕР»СѓС‡Р°РµРј РѕРїРёСЃР°РЅРёРµ РєСѓСЂСЃР°
+        $category_id = $data['category'];//РїРѕР»СѓС‡Р°РµРј РєР°С‚РµРіРѕСЂРёСЋ РєСѓСЂСЃР°
+        $url = $request->url();//РїРѕР»СѓС‡Р°РµРј РїСѓС‚СЊ
+        $pos = strrpos($url, 'profile');//РѕР±СЂРµР·Р°РµРј
+        $url = substr($url,0,$pos);//РїРѕР»СѓС‡Р°РµРј РґРѕРјРµРЅ + РїСЂРѕС‚РѕРєРѕР»
+        $UploadPathImage = public_path().'/assets/temp/';//РІСЂРµРјРµРЅРЅС‹Р№
+        $image_url  = null;//РјРѕР¶РµС‚ Р±С‹С‚СЊ Рё РЅРµ Р±СѓРґРµС‚ Р·Р°РіСЂСѓР¶РЅРѕ С„РѕС‚РѕРіСЂР°С„РёРё
         if($request->hasFile('image')){
             $extension = $data['image']->getClientOriginalExtension();
             $time = Carbon::now();
@@ -48,7 +48,7 @@ class CollectionsController extends Controller {
             'description' => $description,
             'image_url' => $image_url,
         ];
-        $collection_id = Collection::save_collection($data);//сохраняем курс и получаем id
+        $collection_id = Collection::save_collection($data);//СЃРѕС…СЂР°РЅСЏРµРј РєСѓСЂСЃ Рё РїРѕР»СѓС‡Р°РµРј id
         return redirect('/profile/collection/edit/'.$collection_id);
     }
     public function get_collection_edit($collection_id = null){
@@ -59,32 +59,32 @@ class CollectionsController extends Controller {
         if($collection_id == null)
             return  redirect('/profile/my_collection');
         $collection = Collection::get_collection($collection_id);
-        $user_id = Auth::user()-> id;// id пользователя
+        $user_id = Auth::user()-> id;// id РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         if($collection -> user_id != $user_id)
             return redirect('/profile/my_collection');
-        if($collection-> image_url != null && $collection-> image_preview_url == null){//курс впервые редактируется
-            $temp_url = $collection-> image_url;//получение временного пути
-            $delete_pos = strrpos($temp_url, 'image');//получаем позицию
-            $image_name = substr($temp_url,$delete_pos,strlen($temp_url));//получаем старое имя
-            $pos = strrpos($temp_url,'assets');//получаем позицию
-            $url = substr($temp_url,0,$pos);//получаем протокол + домен
-            $extension_pos = strrpos($image_name,'.');//получаем позицию
-            $extension = substr($image_name,$extension_pos,strlen($image_name));//получаем расширение
-            $UploadPathTemp = public_path().'/assets/temp/';//путь темповой папки
-            $UploadPathImage = public_path().'/assets/collections/';//путь папки избражения
-            $UploadPathImagePreview = public_path().'/assets/collections/preview/';//путь папки превью
+        if($collection-> image_url != null && $collection-> image_preview_url == null){//РєСѓСЂСЃ РІРїРµСЂРІС‹Рµ СЂРµРґР°РєС‚РёСЂСѓРµС‚СЃСЏ
+            $temp_url = $collection-> image_url;//РїРѕР»СѓС‡РµРЅРёРµ РІСЂРµРјРµРЅРЅРѕРіРѕ РїСѓС‚Рё
+            $delete_pos = strrpos($temp_url, 'image');//РїРѕР»СѓС‡Р°РµРј РїРѕР·РёС†РёСЋ
+            $image_name = substr($temp_url,$delete_pos,strlen($temp_url));//РїРѕР»СѓС‡Р°РµРј СЃС‚Р°СЂРѕРµ РёРјСЏ
+            $pos = strrpos($temp_url,'assets');//РїРѕР»СѓС‡Р°РµРј РїРѕР·РёС†РёСЋ
+            $url = substr($temp_url,0,$pos);//РїРѕР»СѓС‡Р°РµРј РїСЂРѕС‚РѕРєРѕР» + РґРѕРјРµРЅ
+            $extension_pos = strrpos($image_name,'.');//РїРѕР»СѓС‡Р°РµРј РїРѕР·РёС†РёСЋ
+            $extension = substr($image_name,$extension_pos,strlen($image_name));//РїРѕР»СѓС‡Р°РµРј СЂР°СЃС€РёСЂРµРЅРёРµ
+            $UploadPathTemp = public_path().'/assets/temp/';//РїСѓС‚СЊ С‚РµРјРїРѕРІРѕР№ РїР°РїРєРё
+            $UploadPathImage = public_path().'/assets/collections/';//РїСѓС‚СЊ РїР°РїРєРё РёР·Р±СЂР°Р¶РµРЅРёСЏ
+            $UploadPathImagePreview = public_path().'/assets/collections/preview/';//РїСѓС‚СЊ РїР°РїРєРё РїСЂРµРІСЊСЋ
             $time = Carbon::now()->format('Y_m_d_h_m_s');
-            $image_name_new = 'image_collection_'.$collection -> id.'_'.$time.mb_strtolower($extension);//Новое имя
-            File::copy($UploadPathTemp.$image_name,$UploadPathImage.$image_name_new);//копируем файл
-            File::copy($UploadPathTemp.$image_name,$UploadPathImagePreview.$image_name_new);//копируем файл
-            Image::make(sprintf($UploadPathImage.'%s', $image_name_new))->resize(180, 224)->save();//меняем размер
-            Image::make(sprintf($UploadPathImagePreview.'%s', $image_name_new))->resize(200, 185)->save();//меняем рамер
-            File::delete($UploadPathTemp.$image_name);//удаляем временное изображение
-            $data = [//подготавливаем массив для обновления
+            $image_name_new = 'image_collection_'.$collection -> id.'_'.$time.mb_strtolower($extension);//РќРѕРІРѕРµ РёРјСЏ
+            File::copy($UploadPathTemp.$image_name,$UploadPathImage.$image_name_new);//РєРѕРїРёСЂСѓРµРј С„Р°Р№Р»
+            File::copy($UploadPathTemp.$image_name,$UploadPathImagePreview.$image_name_new);//РєРѕРїРёСЂСѓРµРј С„Р°Р№Р»
+            Image::make(sprintf($UploadPathImage.'%s', $image_name_new))->resize(180, 224)->save();//РјРµРЅСЏРµРј СЂР°Р·РјРµСЂ
+            Image::make(sprintf($UploadPathImagePreview.'%s', $image_name_new))->resize(200, 185)->save();//РјРµРЅСЏРµРј СЂР°РјРµСЂ
+            File::delete($UploadPathTemp.$image_name);//СѓРґР°Р»СЏРµРј РІСЂРµРјРµРЅРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ
+            $data = [//РїРѕРґРіРѕС‚Р°РІР»РёРІР°РµРј РјР°СЃСЃРёРІ РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ
                 'image_url' => $url.'assets/collections/'.$image_name_new,
                 'image_preview_url' => $url.'assets/collections/preview/'.$image_name_new
             ];
-            Collection::update_collection($collection_id,$data);//обновляем данные курса
+            Collection::update_collection($collection_id,$data);//РѕР±РЅРѕРІР»СЏРµРј РґР°РЅРЅС‹Рµ РєСѓСЂСЃР°
         }
         $categories = Category::all();
         $videos = Video::get_video($collection_id);
@@ -104,17 +104,17 @@ class CollectionsController extends Controller {
         if(!Auth::check())
             return redirect('/login');
         $data = $request->all();
-        $collection_name = $data['collection_name'];//получаем название курса
-        $description = $data['description'];//получаем описание курса
-        $category_id = $data['category'];//получаем категорию курса
-        $url = $request->url();//получаем путь
-        $pos = strrpos($url, 'profile');//обрезаем
-        $url = substr($url,0,$pos);//получаем домен + протокол
+        $collection_name = $data['collection_name'];//РїРѕР»СѓС‡Р°РµРј РЅР°Р·РІР°РЅРёРµ РєСѓСЂСЃР°
+        $description = $data['description'];//РїРѕР»СѓС‡Р°РµРј РѕРїРёСЃР°РЅРёРµ РєСѓСЂСЃР°
+        $category_id = $data['category'];//РїРѕР»СѓС‡Р°РµРј РєР°С‚РµРіРѕСЂРёСЋ РєСѓСЂСЃР°
+        $url = $request->url();//РїРѕР»СѓС‡Р°РµРј РїСѓС‚СЊ
+        $pos = strrpos($url, 'profile');//РѕР±СЂРµР·Р°РµРј
+        $url = substr($url,0,$pos);//РїРѕР»СѓС‡Р°РµРј РґРѕРјРµРЅ + РїСЂРѕС‚РѕРєРѕР»
         $collection_old = Collection::where('id',$collection_id)->get();
         $i_url =  $collection_old[0]-> image_url;
         $i_purl = $collection_old[0]-> image_preview_url;
         if($request->hasFile('image')){
-            if($i_url != null && $i_purl != null){//Если ранее были загружены изображения
+            if($i_url != null && $i_purl != null){//Р•СЃР»Рё СЂР°РЅРµРµ Р±С‹Р»Рё Р·Р°РіСЂСѓР¶РµРЅС‹ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
                 $delete_pos = strrpos($i_url, 'image');
                 $delete_image_name = substr($i_url,$delete_pos,strlen($i_url));
                 $UploadPathImage = public_path().'/assets/collections/';
@@ -123,14 +123,14 @@ class CollectionsController extends Controller {
                 File::delete($UploadPathImagePreview.$delete_image_name);
             }
             $UploadPathImage = public_path().'/assets/collections/';
-            $UploadPathImagePreview = public_path().'/assets/collections/preview/';//временный
+            $UploadPathImagePreview = public_path().'/assets/collections/preview/';//РІСЂРµРјРµРЅРЅС‹Р№
             $extension = $data['image']->getClientOriginalExtension();
             $time = Carbon::now()->format('Y_m_d_h_m_s');
             $image_name = 'image_collection_'.$collection_id.'_'.$time.'.'.mb_strtolower($extension);
             $data['image']-> move($UploadPathImage, $image_name);
-            File::copy($UploadPathImage.$image_name,$UploadPathImagePreview.$image_name);//копируем файл
-            Image::make(sprintf(public_path().'/assets/collections/%s', $image_name))->resize(180, 224)->save();//меняем размер
-            Image::make(sprintf(public_path().'/assets/collections/preview/%s', $image_name))->resize(200, 185)->save();//меняем размер
+            File::copy($UploadPathImage.$image_name,$UploadPathImagePreview.$image_name);//РєРѕРїРёСЂСѓРµРј С„Р°Р№Р»
+            Image::make(sprintf(public_path().'/assets/collections/%s', $image_name))->resize(180, 224)->save();//РјРµРЅСЏРµРј СЂР°Р·РјРµСЂ
+            Image::make(sprintf(public_path().'/assets/collections/preview/%s', $image_name))->resize(200, 185)->save();//РјРµРЅСЏРµРј СЂР°Р·РјРµСЂ
             $i_url = $url.'assets/collections/'.$image_name;
             $i_purl = $url.'assets/collections/preview/'.$image_name;
         }
@@ -142,7 +142,7 @@ class CollectionsController extends Controller {
             'image_preview_url' => $i_purl
         ];
         Collection::update_collection($collection_id,$data);
-        return redirect('profile/collection/edit/'.$collection_id)->with('success','Данные успешно сохранены');
+        return redirect('profile/collection/edit/'.$collection_id)->with('success','Р”Р°РЅРЅС‹Рµ СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅС‹');
     }
     public function delete_collection($collection_id){
         if($collection_id != null && !ctype_digit($collection_id))
@@ -178,7 +178,7 @@ class CollectionsController extends Controller {
         $collection = Collection::get_collection($collection_id);
         if(!$collection instanceof Collection)
             return redirect('/profile/my_collection');
-        $user_id = Auth::user()-> id;// id пользователя
+        $user_id = Auth::user()-> id;// id РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         if($collection -> user_id != $user_id)
             return redirect('/profile/my_collection');
         return view('New_video',compact('collection_id'));
@@ -254,7 +254,7 @@ class CollectionsController extends Controller {
             'youtube_link' => $youtube_link
         ];
         Video::update_video($video_id,$data);
-        return redirect('profile/video/edit/'.$video_id)->with('success','Данные успешно сохранены');
+        return redirect('profile/video/edit/'.$video_id)->with('success','Р”Р°РЅРЅС‹Рµ СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅС‹');
     }
     public function delete_video($video_id){
         if($video_id != null && !ctype_digit($video_id))
